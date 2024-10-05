@@ -10,7 +10,7 @@ const server = http.createServer(app);
 
 // Define CORS options
 const corsOptions = {
-  origin: ["http://localhost:5174"], // Specify the client URL
+  origin: ["https://chat-app-sdg-classroom.vercel.app"], // Specify the client URL
   methods: ["GET", "POST"],
   allowedHeaders: ["Content-Type"],
   credentials: true, // Allow cookies and authentication
