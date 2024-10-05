@@ -8,13 +8,14 @@ const { GoogleGenerativeAI } = require("@google/generative-ai");
 const app = express();
 const server = http.createServer(app);
 
-// Enable CORS for requests coming from 'https://chat-app-sdg-classroom.vercel.app'
-app.use(cors({
-  origin: 'https://chat-app-sdg-classroom.vercel.app',
-  methods: ['GET', 'POST', 'PUT', 'DELETE'], // Specify allowed methods
+// Define CORS options
+const corsOptions = {
+  origin: "https://chat-app-sdg-classroom.vercel.app",
+  methods: ["GET", "POST", "PUT", "DELETE"], // Specify allowed methods
   credentials: true, // Allow credentials like cookies if necessary
-}));
+};
 
+// Enable CORS for the express app
 app.use(cors(corsOptions)); // Apply CORS middleware to express
 
 // Instantiate Socket.IO with CORS options
@@ -26,6 +27,7 @@ const PORT = process.env.PORT || 3000;
 
 app.use(express.json());
 
+// Google Generative AI initialization
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 
 io.on("connection", (socket) => {
@@ -51,7 +53,7 @@ io.on("connection", (socket) => {
   });
 });
 
-// HTTP POST endpoint as fallback or additional option
+// HTTP POST endpoint as a fallback or additional option
 app.post("/api/chat", async (req, res) => {
   const { prompt } = req.body;
   if (!prompt) {
@@ -72,6 +74,7 @@ app.post("/api/chat", async (req, res) => {
   }
 });
 
+// Start the server
 server.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
