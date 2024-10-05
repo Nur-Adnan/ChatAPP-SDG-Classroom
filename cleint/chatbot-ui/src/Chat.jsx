@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import io from 'socket.io-client';
 
 // Connect to the server
-const socket = io('http://localhost:3000');
+const socket = io('https://chatapp-1-hqts.onrender.com');
 
 function Chat() {
     const [messages, setMessages] = useState([]);
