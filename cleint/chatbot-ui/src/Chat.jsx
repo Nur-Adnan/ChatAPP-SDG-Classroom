@@ -1,8 +1,11 @@
 import React, { useState, useEffect, useRef } from 'react';
 import io from 'socket.io-client';
 
-// Connect to the server
-const socket = io('https://chatapp-1-hqts.onrender.com');
+// Connect to the server with CORS settings
+const socket = io('https://chatapp-1-hqts.onrender.com', {
+    transports: ['websocket'],  // Use WebSockets instead of polling if supported
+    withCredentials: true, // Allow credentials if necessary
+});
 
 function Chat() {
     const [messages, setMessages] = useState([]);

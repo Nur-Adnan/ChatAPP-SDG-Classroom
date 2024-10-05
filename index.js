@@ -8,13 +8,12 @@ const { GoogleGenerativeAI } = require("@google/generative-ai");
 const app = express();
 const server = http.createServer(app);
 
-// Define CORS options
-const corsOptions = {
-  origin: ["https://chat-app-sdg-classroom.vercel.app"], // Specify the client URL
-  methods: ["GET", "POST"],
-  allowedHeaders: ["Content-Type"],
-  credentials: true, // Allow cookies and authentication
-};
+// Enable CORS for requests coming from 'https://chat-app-sdg-classroom.vercel.app'
+app.use(cors({
+  origin: 'https://chat-app-sdg-classroom.vercel.app',
+  methods: ['GET', 'POST', 'PUT', 'DELETE'], // Specify allowed methods
+  credentials: true, // Allow credentials like cookies if necessary
+}));
 
 app.use(cors(corsOptions)); // Apply CORS middleware to express
 
