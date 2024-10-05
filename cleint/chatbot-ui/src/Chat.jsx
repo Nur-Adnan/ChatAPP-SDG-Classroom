@@ -1,10 +1,9 @@
 import React, { useState, useEffect, useRef } from 'react';
-import io from 'socket.io-client';
+import io from 'socket.io-client';  // This is for the client-side connection
 
-// Connect to the server with CORS settings
-const socket = io('https://chatapp-1-hqts.onrender.com', {
-    transports: ['websocket'],  // Use WebSockets instead of polling if supported
-    withCredentials: true, // Allow credentials if necessary
+// Connect to the Socket.IO server
+const socket = io('chatapp-production-d86e.up.railway.app', {
+    transports: ['websocket', 'polling'],  // Enable both WebSocket and polling transports
 });
 
 function Chat() {
@@ -14,6 +13,7 @@ function Chat() {
     const bottomRef = useRef(null);
 
     useEffect(() => {
+        // Handle connection events
         socket.on('connect', () => {
             setIsConnected(true);
         });
@@ -31,6 +31,7 @@ function Chat() {
             setMessages(msgs => [...msgs, { text: errorMessage, sender: 'bot' }]);
         });
 
+        // Clean up socket listeners on component unmount
         return () => {
             socket.off('connect');
             socket.off('disconnect');
@@ -42,10 +43,11 @@ function Chat() {
     const sendMessage = () => {
         if (!input.trim()) return;
         setMessages(msgs => [...msgs, { text: input, sender: 'user' }]);
-        socket.emit('send_prompt', input);
-        setInput('');
+        socket.emit('send_prompt', input);  // Emit message to the server
+        setInput('');  // Clear input
     };
 
+    // Auto-scroll to the bottom when messages update
     useEffect(() => {
         bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
     }, [messages]);
